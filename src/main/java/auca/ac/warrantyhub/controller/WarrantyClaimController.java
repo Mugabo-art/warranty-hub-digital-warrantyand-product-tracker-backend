@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import auca.ac.warrantyhub.model.ClaimStatus;
 import auca.ac.warrantyhub.model.WarrantyClaim;
 import auca.ac.warrantyhub.service.WarrantyClaimService;
 
@@ -69,4 +70,11 @@ public class WarrantyClaimController {
             return new ResponseEntity<String>(message, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/by-status")
+    public ResponseEntity<List<WarrantyClaim>> getWarrantyClaimsByStatus(@RequestParam ClaimStatus status) {
+        List<WarrantyClaim> warrantyClaims = warrantyClaimService.getWarrantyClaimsByStatus(status);
+        return new ResponseEntity<List<WarrantyClaim>>(warrantyClaims, HttpStatus.OK);
+    }
+
 }

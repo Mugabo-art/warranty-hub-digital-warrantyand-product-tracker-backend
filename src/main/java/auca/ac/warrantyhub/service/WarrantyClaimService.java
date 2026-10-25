@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import auca.ac.warrantyhub.model.WarrantyClaim;
+import auca.ac.warrantyhub.model.ClaimStatus;
+
 import auca.ac.warrantyhub.repository.WarrantyClaimRepository;
 
 @Service
@@ -56,4 +58,10 @@ public class WarrantyClaimService {
         warrantyClaimRepository.deleteById(id);
         return "Warranty claim deleted successfully";
     }
+
+    public List<WarrantyClaim> getWarrantyClaimsByStatus(ClaimStatus status) {
+        List<WarrantyClaim> warrantyClaims = warrantyClaimRepository.findByStatusOrderByClaimDateAsc(status);
+        return warrantyClaims;
+    }
+
 }
