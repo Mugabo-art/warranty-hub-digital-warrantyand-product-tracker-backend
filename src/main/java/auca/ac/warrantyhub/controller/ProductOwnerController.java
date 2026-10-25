@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import auca.ac.warrantyhub.model.ProductOwner;
@@ -69,4 +70,11 @@ public class ProductOwnerController {
             return new ResponseEntity<String>(message, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/by-last-name")
+    public ResponseEntity<List<ProductOwner>> getProductOwnersByLastName(@RequestParam String lastName) {
+        List<ProductOwner> productOwners = productOwnerService.getProductOwnersByLastName(lastName);
+        return new ResponseEntity<List<ProductOwner>>(productOwners, HttpStatus.OK);
+    }
+
 }

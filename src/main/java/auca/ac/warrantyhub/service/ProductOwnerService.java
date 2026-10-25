@@ -54,4 +54,10 @@ public class ProductOwnerService {
         productOwnerRepository.deleteById(id);
         return "Product owner deleted successfully";
     }
+
+    public List<ProductOwner> getProductOwnersByLastName(String lastName) {
+        List<ProductOwner> productOwners = productOwnerRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+        return productOwners;
+    }
+
 }
