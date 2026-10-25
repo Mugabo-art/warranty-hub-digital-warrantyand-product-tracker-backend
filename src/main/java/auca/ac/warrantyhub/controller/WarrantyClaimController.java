@@ -1,5 +1,5 @@
 package auca.ac.warrantyhub.controller;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -76,5 +76,14 @@ public class WarrantyClaimController {
         List<WarrantyClaim> warrantyClaims = warrantyClaimService.getWarrantyClaimsByStatus(status);
         return new ResponseEntity<List<WarrantyClaim>>(warrantyClaims, HttpStatus.OK);
     }
+
+    @GetMapping("/between")
+    public ResponseEntity<List<WarrantyClaim>> getWarrantyClaimsBetween(@RequestParam String start, @RequestParam String end) {
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        List<WarrantyClaim> warrantyClaims = warrantyClaimService.getWarrantyClaimsBetween(startDate, endDate);
+        return new ResponseEntity<List<WarrantyClaim>>(warrantyClaims, HttpStatus.OK);
+    }
+
 
 }

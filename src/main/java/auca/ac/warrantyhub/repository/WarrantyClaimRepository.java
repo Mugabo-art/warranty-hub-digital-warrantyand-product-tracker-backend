@@ -1,5 +1,5 @@
 package auca.ac.warrantyhub.repository;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,4 +12,6 @@ import auca.ac.warrantyhub.model.WarrantyClaim;
 public interface WarrantyClaimRepository extends JpaRepository<WarrantyClaim, UUID> {
 
     List<WarrantyClaim> findByStatusOrderByClaimDateAsc(ClaimStatus status);
+    List<WarrantyClaim> findByClaimDateBetweenOrderByClaimDateAsc(LocalDate start, LocalDate end);
+
 }

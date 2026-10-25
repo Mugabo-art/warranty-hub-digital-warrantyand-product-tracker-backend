@@ -1,5 +1,5 @@
 package auca.ac.warrantyhub.service;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,6 +61,11 @@ public class WarrantyClaimService {
 
     public List<WarrantyClaim> getWarrantyClaimsByStatus(ClaimStatus status) {
         List<WarrantyClaim> warrantyClaims = warrantyClaimRepository.findByStatusOrderByClaimDateAsc(status);
+        return warrantyClaims;
+    }
+
+    public List<WarrantyClaim> getWarrantyClaimsBetween(LocalDate start, LocalDate end) {
+        List<WarrantyClaim> warrantyClaims = warrantyClaimRepository.findByClaimDateBetweenOrderByClaimDateAsc(start, end);
         return warrantyClaims;
     }
 
