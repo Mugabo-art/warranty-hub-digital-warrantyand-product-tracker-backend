@@ -50,4 +50,10 @@ public class ServiceCenterService {
         serviceCenterRepository.deleteById(id);
         return "Service center deleted successfully";
     }
+
+    public List<ServiceCenter> getFreeServiceCenters() {
+        List<ServiceCenter> freeServiceCenters = serviceCenterRepository.findFreeServiceCenters();
+        return freeServiceCenters;
+    }
+
 }

@@ -69,4 +69,11 @@ public class ServiceCenterController {
             return new ResponseEntity<String>(message, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/free")
+    public ResponseEntity<List<ServiceCenter>> getFreeServiceCenters() {
+        List<ServiceCenter> freeServiceCenters = serviceCenterService.getFreeServiceCenters();
+        return new ResponseEntity<List<ServiceCenter>>(freeServiceCenters, HttpStatus.OK);
+    }
+
 }
