@@ -8,15 +8,20 @@ import org.springframework.stereotype.Service;
 
 import auca.ac.warrantyhub.model.ProductOwner;
 import auca.ac.warrantyhub.repository.ProductOwnerRepository;
+import auca.ac.warrantyhub.repository.ReviewerRepository;
+
 
 @Service
 public class ProductOwnerService {
 
     private final ProductOwnerRepository productOwnerRepository;
+    private final ReviewerRepository reviewerRepository;
 
-    public ProductOwnerService(ProductOwnerRepository productOwnerRepository) {
+    public ProductOwnerService(ProductOwnerRepository productOwnerRepository, ReviewerRepository reviewerRepository) {
         this.productOwnerRepository = productOwnerRepository;
+        this.reviewerRepository = reviewerRepository;
     }
+
 
     public String saveProductOwner(ProductOwner productOwner) {
         productOwnerRepository.save(productOwner);
@@ -57,6 +62,14 @@ public class ProductOwnerService {
 
     public List<ProductOwner> getProductOwnersByLastName(String lastName) {
         List<ProductOwner> productOwners = productOwnerRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+        return productOwners;
+    }
+
+    public List<ProductOwner> getProductOwnersOfReviewer(UUID reviewerId) {
+        if (!reviewerRepository.existsById(reviewerId)) {
+            return null;
+        }
+        List<ProductOwner> productOwners = productOwnerRepository.findOwnersOfReviewer(reviewerId);
         return productOwners;
     }
 

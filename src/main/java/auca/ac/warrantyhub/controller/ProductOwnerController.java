@@ -77,4 +77,15 @@ public class ProductOwnerController {
         return new ResponseEntity<List<ProductOwner>>(productOwners, HttpStatus.OK);
     }
 
+    @GetMapping("/of-reviewer/{reviewerId}")
+    public ResponseEntity<Object> getProductOwnersOfReviewer(@PathVariable UUID reviewerId) {
+        List<ProductOwner> productOwners = productOwnerService.getProductOwnersOfReviewer(reviewerId);
+        if (productOwners == null) {
+            return new ResponseEntity<Object>("The reviewer with that id does not exist", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<Object>(productOwners, HttpStatus.OK);
+        }
+    }
+
+
 }
