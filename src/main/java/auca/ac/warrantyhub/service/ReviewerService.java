@@ -53,4 +53,10 @@ public class ReviewerService {
         reviewerRepository.deleteById(id);
         return "Reviewer deleted successfully";
     }
+
+    public List<Reviewer> getReviewersByProductCategory(String name) {
+        List<Reviewer> reviewers = reviewerRepository.findByProductCategoryName(name);
+        return reviewers;
+    }
+
 }
