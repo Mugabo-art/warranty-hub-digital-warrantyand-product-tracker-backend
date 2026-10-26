@@ -51,4 +51,10 @@ public class ProductCategoryService {
         productCategoryRepository.deleteById(id);
         return "Product category deleted successfully";
     }
+
+    public List<ProductCategory> getUnusedProductCategories() {
+        List<ProductCategory> unusedProductCategories = productCategoryRepository.findUnusedProductCategories();
+        return unusedProductCategories;
+    }
+
 }

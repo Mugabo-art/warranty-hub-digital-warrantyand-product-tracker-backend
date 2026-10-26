@@ -49,4 +49,5 @@ public class ProductCategory {
     public void setReviewers(List<Reviewer> reviewers) {
         this.reviewers = reviewers;
     }
+    
 }

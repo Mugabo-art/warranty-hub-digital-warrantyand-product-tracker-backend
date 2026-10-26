@@ -70,4 +70,11 @@ public class ProductCategoryController {
             return new ResponseEntity<String>(message, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/unused")
+    public ResponseEntity<List<ProductCategory>> getUnusedProductCategories() {
+        List<ProductCategory> unusedProductCategories = productCategoryService.getUnusedProductCategories();
+        return new ResponseEntity<List<ProductCategory>>(unusedProductCategories, HttpStatus.OK);
+    }
+
 }
