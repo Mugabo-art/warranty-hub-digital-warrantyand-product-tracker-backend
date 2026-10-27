@@ -1,4 +1,5 @@
 package auca.ac.warrantyhub.repository;
+import auca.ac.warrantyhub.model.ServiceCenter;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,5 +16,6 @@ public interface ReviewerRepository extends JpaRepository<Reviewer, UUID> {
             + "JOIN r.productCategories c "
             + "WHERE LOWER(c.name) = LOWER(:name)")
     List<Reviewer> findByProductCategoryName(@Param("name") String name);
+    boolean existsByServiceCenter(ServiceCenter serviceCenter);
 
 }

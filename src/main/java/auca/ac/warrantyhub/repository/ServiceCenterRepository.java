@@ -1,5 +1,5 @@
 package auca.ac.warrantyhub.repository;
-
+import java.util.Optional;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,5 +14,7 @@ public interface ServiceCenterRepository extends JpaRepository<ServiceCenter, UU
             + "WHERE NOT EXISTS (SELECT r FROM Reviewer r WHERE r.serviceCenter = s) "
             + "ORDER BY s.centerNumber ASC")
     List<ServiceCenter> findFreeServiceCenters();
+
+    Optional<ServiceCenter> findByCenterNumber(int centerNumber);
 
 }

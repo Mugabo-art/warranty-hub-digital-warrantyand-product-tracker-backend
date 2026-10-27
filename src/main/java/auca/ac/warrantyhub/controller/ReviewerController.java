@@ -1,4 +1,5 @@
 package auca.ac.warrantyhub.controller;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -91,5 +92,18 @@ public class ReviewerController {
         }
     }
 
+    @PatchMapping("/{reviewerId}/service-center")
+    public ResponseEntity<String> changeServiceCenter(@PathVariable UUID reviewerId, @RequestParam int centerNumber) {
+        String message = reviewerService.changeServiceCenter(reviewerId, centerNumber);
+        if (message.equals("The reviewer with that id does not exist")) {
+            return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
+        } else if (message.equals("The service center with that centerNumber does not exist")) {
+            return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
+        } else if (message.equals("That service center is taken by another reviewer")) {
+            return new ResponseEntity<String>(message, HttpStatus.CONFLICT);
+        } else {
+            return new ResponseEntity<String>(message, HttpStatus.OK);
+        }
+    }
 
 }

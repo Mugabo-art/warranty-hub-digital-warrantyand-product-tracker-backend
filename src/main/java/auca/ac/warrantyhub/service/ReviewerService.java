@@ -1,8 +1,9 @@
 package auca.ac.warrantyhub.service;
-
+import auca.ac.warrantyhub.repository.ServiceCenterRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import auca.ac.warrantyhub.model.ServiceCenter;
 
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,14 @@ public class ReviewerService {
 
     private final ReviewerRepository reviewerRepository;
     private final ProductCategoryRepository productCategoryRepository;
+    private final ServiceCenterRepository serviceCenterRepository;
 
-    public ReviewerService(ReviewerRepository reviewerRepository, ProductCategoryRepository productCategoryRepository) {
+    public ReviewerService(ReviewerRepository reviewerRepository, ProductCategoryRepository productCategoryRepository, ServiceCenterRepository serviceCenterRepository) {
         this.reviewerRepository = reviewerRepository;
         this.productCategoryRepository = productCategoryRepository;
+        this.serviceCenterRepository = serviceCenterRepository;
     }
+
 
 
     public String saveReviewer(Reviewer reviewer) {
@@ -84,5 +88,26 @@ public class ReviewerService {
         reviewerRepository.save(reviewer);
         return "Product category added to the reviewer";
     }
+
+    public String changeServiceCenter(UUID reviewerId, int centerNumber) {
+        Optional<Reviewer> existingReviewer = reviewerRepository.findById(reviewerId);
+        if (existingReviewer.isEmpty()) {
+            return "The reviewer with that id does not exist";
+        }
+        Optional<ServiceCenter> existingServiceCenter = serviceCenterRepository.findByCenterNumber(centerNumber);
+        if (existingServiceCenter.isEmpty()) {
+            return "The service center with that centerNumber does not exist";
+        }
+        ServiceCenter serviceCenter = existingServiceCenter.get();
+        boolean taken = reviewerRepository.existsByServiceCenter(serviceCenter);
+        if (taken) {
+            return "That service center is taken by another reviewer";
+        }
+        Reviewer reviewer = existingReviewer.get();
+        reviewer.setServiceCenter(serviceCenter);
+        reviewerRepository.save(reviewer);
+        return "Service center changed successfully";
+    }
+
 
 }
