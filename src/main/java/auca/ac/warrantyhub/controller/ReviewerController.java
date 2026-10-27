@@ -77,4 +77,19 @@ public class ReviewerController {
         return new ResponseEntity<List<Reviewer>>(reviewers, HttpStatus.OK);
     }
 
+    @PutMapping("/{reviewerId}/product-categories/{productCategoryId}")
+    public ResponseEntity<String> addProductCategoryToReviewer(@PathVariable UUID reviewerId, @PathVariable UUID productCategoryId) {
+        String message = reviewerService.addProductCategoryToReviewer(reviewerId, productCategoryId);
+        if (message.equals("The reviewer with that id does not exist")) {
+            return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
+        } else if (message.equals("That product category does not exist")) {
+            return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
+        } else if (message.equals("The reviewer already has that product category")) {
+            return new ResponseEntity<String>(message, HttpStatus.CONFLICT);
+        } else {
+            return new ResponseEntity<String>(message, HttpStatus.OK);
+        }
+    }
+
+
 }
