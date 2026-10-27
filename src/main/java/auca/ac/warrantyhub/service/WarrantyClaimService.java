@@ -54,7 +54,6 @@ public class WarrantyClaimService {
         }
         WarrantyClaim warrantyClaim = existing.get();
         warrantyClaim.setClaimDate(newData.getClaimDate());
-        warrantyClaim.setStatus(newData.getStatus());
         warrantyClaim.setProductName(newData.getProductName());
         warrantyClaim.setFaultDescription(newData.getFaultDescription());
         warrantyClaim.setProductOwner(newData.getProductOwner());
@@ -62,6 +61,32 @@ public class WarrantyClaimService {
         warrantyClaimRepository.save(warrantyClaim);
         return "Warranty claim updated successfully";
     }
+
+    public String updateWarrantyClaimStatus(UUID id, ClaimStatus newStatus) {
+        Optional<WarrantyClaim> existing = warrantyClaimRepository.findById(id);
+        if (existing.isEmpty()) {
+            return "The warranty claim with that id does not exist";
+        }
+        WarrantyClaim warrantyClaim = existing.get();
+        ClaimStatus currentStatus = warrantyClaim.getStatus();
+        boolean allowed = false;
+        if (currentStatus == ClaimStatus.SUBMITTED) {
+            if (newStatus == ClaimStatus.UNDER_REVIEW || newStatus == ClaimStatus.REJECTED) {
+                allowed = true;
+            }
+        } else if (currentStatus == ClaimStatus.UNDER_REVIEW) {
+            if (newStatus == ClaimStatus.APPROVED || newStatus == ClaimStatus.REJECTED) {
+                allowed = true;
+            }
+        }
+        if (!allowed) {
+            return "Cannot change status from " + currentStatus + " to " + newStatus;
+        }
+        warrantyClaim.setStatus(newStatus);
+        warrantyClaimRepository.save(warrantyClaim);
+        return "Warranty claim status updated successfully";
+    }
+
 
     public String deleteWarrantyClaim(UUID id) {
         if (!warrantyClaimRepository.existsById(id)) {
