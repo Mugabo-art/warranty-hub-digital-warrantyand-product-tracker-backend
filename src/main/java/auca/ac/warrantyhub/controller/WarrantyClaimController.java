@@ -32,8 +32,15 @@ public class WarrantyClaimController {
     @PostMapping("/save")
     public ResponseEntity<String> saveWarrantyClaim(@RequestBody WarrantyClaim warrantyClaim) {
         String message = warrantyClaimService.saveWarrantyClaim(warrantyClaim);
-        return new ResponseEntity<String>(message, HttpStatus.CREATED);
+        if (message.equals("Warranty claim date cannot be in the past")) {
+            return new ResponseEntity<String>(message, HttpStatus.BAD_REQUEST);
+        } else if (message.equals("Reviewer already has a claim on that date")) {
+            return new ResponseEntity<String>(message, HttpStatus.CONFLICT);
+        } else {
+            return new ResponseEntity<String>(message, HttpStatus.CREATED);
+        }
     }
+
 
     @GetMapping("/all")
     public ResponseEntity<List<WarrantyClaim>> getAllWarrantyClaims() {

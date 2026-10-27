@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import auca.ac.warrantyhub.model.WarrantyClaim;
 import auca.ac.warrantyhub.model.ClaimStatus;
-
+import auca.ac.warrantyhub.model.Reviewer;
 import auca.ac.warrantyhub.repository.WarrantyClaimRepository;
 
 @Service
@@ -21,9 +21,21 @@ public class WarrantyClaimService {
     }
 
     public String saveWarrantyClaim(WarrantyClaim warrantyClaim) {
+        LocalDate today = LocalDate.now();
+        LocalDate claimDate = warrantyClaim.getClaimDate();
+        if (claimDate.isBefore(today)) {
+            return "Warranty claim date cannot be in the past";
+        }
+        Reviewer reviewer = warrantyClaim.getReviewer();
+        boolean reviewerIsBusy = warrantyClaimRepository.existsByReviewerAndClaimDateAndStatusNot(reviewer, claimDate, ClaimStatus.REJECTED);
+        if (reviewerIsBusy) {
+            return "Reviewer already has a claim on that date";
+        }
+        warrantyClaim.setStatus(ClaimStatus.SUBMITTED);
         warrantyClaimRepository.save(warrantyClaim);
         return "Warranty claim saved successfully";
     }
+
 
     public List<WarrantyClaim> getAllWarrantyClaims() {
         List<WarrantyClaim> warrantyClaims = warrantyClaimRepository.findAll();
