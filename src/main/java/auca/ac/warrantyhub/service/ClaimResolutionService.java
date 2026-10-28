@@ -1,5 +1,5 @@
 package auca.ac.warrantyhub.service;
-
+import java.util.List;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,5 +39,11 @@ public class ClaimResolutionService {
         claimResolutionRepository.save(claimResolution);
         return "Claim resolution saved successfully";
     }
+
+    public List<ClaimResolution> getResolutionsOfProductOwner(String email) {
+        List<ClaimResolution> claimResolutions = claimResolutionRepository.findResolutionsOfProductOwner(email);
+        return claimResolutions;
+    }
+
 
 }

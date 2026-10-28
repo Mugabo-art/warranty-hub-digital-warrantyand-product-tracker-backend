@@ -1,5 +1,7 @@
 package auca.ac.warrantyhub.controller;
 import java.util.UUID;
+import java.util.List;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import auca.ac.warrantyhub.model.ClaimResolution;
 import auca.ac.warrantyhub.service.ClaimResolutionService;
 
@@ -32,5 +37,12 @@ public class ClaimResolutionController {
             return new ResponseEntity<String>(message, HttpStatus.CREATED);
         }
     }
+
+    @GetMapping("/product-owner/{email}")
+    public ResponseEntity<List<ClaimResolution>> getResolutionsOfProductOwner(@PathVariable String email) {
+        List<ClaimResolution> claimResolutions = claimResolutionService.getResolutionsOfProductOwner(email);
+        return new ResponseEntity<List<ClaimResolution>>(claimResolutions, HttpStatus.OK);
+    }
+
 
 }
