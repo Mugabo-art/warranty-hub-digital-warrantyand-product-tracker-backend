@@ -87,9 +87,12 @@ public class WarrantyClaimController {
         String message = warrantyClaimService.deleteWarrantyClaim(id);
         if (message.equals("The warranty claim with that id does not exist")) {
             return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
+        } else if (message.equals("That warranty claim has claim resolutions, delete them first")) {
+            return new ResponseEntity<String>(message, HttpStatus.CONFLICT);
         } else {
             return new ResponseEntity<String>(message, HttpStatus.OK);
         }
+
     }
 
     @GetMapping("/by-status")

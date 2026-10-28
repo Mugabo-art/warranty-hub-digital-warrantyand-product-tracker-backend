@@ -45,5 +45,12 @@ public class ClaimResolutionService {
         return claimResolutions;
     }
 
+    public String deleteClaimResolution(UUID id) {
+        if (!claimResolutionRepository.existsById(id)) {
+            return "The claim resolution with that id does not exist";
+        }
+        claimResolutionRepository.deleteById(id);
+        return "Claim resolution deleted successfully";
+    }
 
 }

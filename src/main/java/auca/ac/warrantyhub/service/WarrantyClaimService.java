@@ -10,15 +10,19 @@ import auca.ac.warrantyhub.model.WarrantyClaim;
 import auca.ac.warrantyhub.model.ClaimStatus;
 import auca.ac.warrantyhub.model.Reviewer;
 import auca.ac.warrantyhub.repository.WarrantyClaimRepository;
+import auca.ac.warrantyhub.repository.ClaimResolutionRepository;
 
 @Service
 public class WarrantyClaimService {
 
     private final WarrantyClaimRepository warrantyClaimRepository;
+    private final ClaimResolutionRepository claimResolutionRepository;
 
-    public WarrantyClaimService(WarrantyClaimRepository warrantyClaimRepository) {
+    public WarrantyClaimService(WarrantyClaimRepository warrantyClaimRepository, ClaimResolutionRepository claimResolutionRepository) {
         this.warrantyClaimRepository = warrantyClaimRepository;
+        this.claimResolutionRepository = claimResolutionRepository;
     }
+
 
     public String saveWarrantyClaim(WarrantyClaim warrantyClaim) {
         LocalDate today = LocalDate.now();
@@ -87,15 +91,21 @@ public class WarrantyClaimService {
         return "Warranty claim status updated successfully";
     }
 
-
     public String deleteWarrantyClaim(UUID id) {
-        if (!warrantyClaimRepository.existsById(id)) {
+        Optional<WarrantyClaim> existing = warrantyClaimRepository.findById(id);
+        if (existing.isEmpty()) {
             return "The warranty claim with that id does not exist";
+        }
+        WarrantyClaim warrantyClaim = existing.get();
+        boolean hasResolutions = claimResolutionRepository.existsByWarrantyClaim(warrantyClaim);
+        if (hasResolutions) {
+            return "That warranty claim has claim resolutions, delete them first";
         }
         warrantyClaimRepository.deleteById(id);
         return "Warranty claim deleted successfully";
     }
 
+    
     public List<WarrantyClaim> getWarrantyClaimsByStatus(ClaimStatus status) {
         List<WarrantyClaim> warrantyClaims = warrantyClaimRepository.findByStatusOrderByClaimDateAsc(status);
         return warrantyClaims;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -44,5 +45,14 @@ public class ClaimResolutionController {
         return new ResponseEntity<List<ClaimResolution>>(claimResolutions, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteClaimResolution(@PathVariable UUID id) {
+        String message = claimResolutionService.deleteClaimResolution(id);
+        if (message.equals("The claim resolution with that id does not exist")) {
+            return new ResponseEntity<String>(message, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<String>(message, HttpStatus.OK);
+        }
+    }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import auca.ac.warrantyhub.model.ProductCategory;
 
+
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, UUID> {
 
     @Query("SELECT c FROM ProductCategory c WHERE c.reviewers IS EMPTY")

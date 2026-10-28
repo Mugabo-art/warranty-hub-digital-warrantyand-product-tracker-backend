@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import auca.ac.warrantyhub.model.ClaimResolution;
+import auca.ac.warrantyhub.model.WarrantyClaim;
+
 
 public interface ClaimResolutionRepository extends JpaRepository<ClaimResolution, UUID> {
 
@@ -15,5 +17,6 @@ public interface ClaimResolutionRepository extends JpaRepository<ClaimResolution
             + "WHERE c.warrantyClaim.productOwner.email = :email "
             + "ORDER BY c.resolvedDate DESC")
     List<ClaimResolution> findResolutionsOfProductOwner(@Param("email") String email);
+    boolean existsByWarrantyClaim(WarrantyClaim warrantyClaim);
 
 }
