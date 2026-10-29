@@ -115,4 +115,11 @@ public class WarrantyClaimController {
         return new ResponseEntity<List<Object[]>>(counts, HttpStatus.OK);
     }
 
+    @PatchMapping("/cancel-day")
+    public ResponseEntity<String> cancelDay(@RequestParam UUID reviewerId, @RequestParam String date) {
+        LocalDate cancelDate = LocalDate.parse(date);
+        String message = warrantyClaimService.cancelDay(reviewerId, cancelDate);
+        return new ResponseEntity<String>(message, HttpStatus.OK);
+    }
+
 }

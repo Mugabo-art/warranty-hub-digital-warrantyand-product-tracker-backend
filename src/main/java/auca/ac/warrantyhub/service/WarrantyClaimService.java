@@ -11,6 +11,8 @@ import auca.ac.warrantyhub.model.ClaimStatus;
 import auca.ac.warrantyhub.model.Reviewer;
 import auca.ac.warrantyhub.repository.WarrantyClaimRepository;
 import auca.ac.warrantyhub.repository.ClaimResolutionRepository;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class WarrantyClaimService {
@@ -121,5 +123,10 @@ public class WarrantyClaimService {
         return counts;
     }
 
+    @Transactional
+    public String cancelDay(UUID reviewerId, LocalDate date) {
+        int cancelled = warrantyClaimRepository.cancelDay(reviewerId, date, ClaimStatus.REJECTED, ClaimStatus.APPROVED);
+        return cancelled + " warranty claims cancelled";
+    }
 
 }
