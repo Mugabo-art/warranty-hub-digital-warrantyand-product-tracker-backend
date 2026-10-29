@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 
 import auca.ac.warrantyhub.model.ClaimStatus;
 import auca.ac.warrantyhub.model.Reviewer;
@@ -15,5 +17,8 @@ public interface WarrantyClaimRepository extends JpaRepository<WarrantyClaim, UU
     List<WarrantyClaim> findByStatusOrderByClaimDateAsc(ClaimStatus status);
     List<WarrantyClaim> findByClaimDateBetweenOrderByClaimDateAsc(LocalDate start, LocalDate end);
     boolean existsByReviewerAndClaimDateAndStatusNot(Reviewer reviewer, LocalDate claimDate, ClaimStatus status);
+    @Query("SELECT w.status, COUNT(w) FROM WarrantyClaim w "
+            + "GROUP BY w.status")
+    List<Object[]> countClaimsByStatus();
 
 }

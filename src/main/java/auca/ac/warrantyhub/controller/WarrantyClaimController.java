@@ -109,5 +109,10 @@ public class WarrantyClaimController {
         return new ResponseEntity<List<WarrantyClaim>>(warrantyClaims, HttpStatus.OK);
     }
 
+    @GetMapping("/stats/by-status")
+    public ResponseEntity<List<Object[]>> getClaimCountsByStatus() {
+        List<Object[]> counts = warrantyClaimService.getClaimCountsByStatus();
+        return new ResponseEntity<List<Object[]>>(counts, HttpStatus.OK);
+    }
 
 }

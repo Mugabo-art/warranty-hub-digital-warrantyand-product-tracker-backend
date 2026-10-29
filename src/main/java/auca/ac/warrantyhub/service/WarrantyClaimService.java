@@ -116,4 +116,10 @@ public class WarrantyClaimService {
         return warrantyClaims;
     }
 
+    public List<Object[]> getClaimCountsByStatus() {
+        List<Object[]> counts = warrantyClaimRepository.countClaimsByStatus();
+        return counts;
+    }
+
+
 }
