@@ -6,6 +6,10 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -120,6 +124,24 @@ public class WarrantyClaimController {
         LocalDate cancelDate = LocalDate.parse(date);
         String message = warrantyClaimService.cancelDay(reviewerId, cancelDate);
         return new ResponseEntity<String>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<WarrantyClaim>> getWarrantyClaimsPage(@RequestParam int page, @RequestParam int size, @RequestParam String sort) {
+        String[] sortParts = sort.split(",");
+        String sortField = sortParts[0];
+        String sortDirection = sortParts[1];
+
+        Sort sortOrder;
+        if (sortDirection.equals("desc")) {
+            sortOrder = Sort.by(sortField).descending();
+        } else {
+            sortOrder = Sort.by(sortField).ascending();
+        }
+
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+        Page<WarrantyClaim> claimsPage = warrantyClaimService.getWarrantyClaimsPage(pageable);
+        return new ResponseEntity<Page<WarrantyClaim>>(claimsPage, HttpStatus.OK);
     }
 
 }

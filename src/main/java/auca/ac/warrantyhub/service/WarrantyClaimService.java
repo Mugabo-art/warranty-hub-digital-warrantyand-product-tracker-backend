@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 import auca.ac.warrantyhub.model.WarrantyClaim;
 import auca.ac.warrantyhub.model.ClaimStatus;
@@ -128,5 +131,11 @@ public class WarrantyClaimService {
         int cancelled = warrantyClaimRepository.cancelDay(reviewerId, date, ClaimStatus.REJECTED, ClaimStatus.APPROVED);
         return cancelled + " warranty claims cancelled";
     }
+    
+    public Page<WarrantyClaim> getWarrantyClaimsPage(Pageable pageable) {
+        Page<WarrantyClaim> claimsPage = warrantyClaimRepository.findAll(pageable);
+        return claimsPage;
+    }
+
 
 }
