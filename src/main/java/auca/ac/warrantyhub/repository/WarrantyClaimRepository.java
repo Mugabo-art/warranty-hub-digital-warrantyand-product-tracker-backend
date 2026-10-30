@@ -19,6 +19,9 @@ public interface WarrantyClaimRepository extends JpaRepository<WarrantyClaim, UU
     List<WarrantyClaim> findByStatusOrderByClaimDateAsc(ClaimStatus status);
     List<WarrantyClaim> findByClaimDateBetweenOrderByClaimDateAsc(LocalDate start, LocalDate end);
     boolean existsByReviewerAndClaimDateAndStatusNot(Reviewer reviewer, LocalDate claimDate, ClaimStatus status);
+    long countByClaimDate(LocalDate claimDate);
+    long countByStatus(ClaimStatus status);
+
     @Query("SELECT w.status, COUNT(w) FROM WarrantyClaim w "
             + "GROUP BY w.status")
     List<Object[]> countClaimsByStatus();
